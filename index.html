@@ -1,0 +1,80 @@
+python -m http.server 8000
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capture Photo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        input {
+            display: block;
+            margin: 15px auto;
+        }
+        h2 {
+            margin-top: 20px;
+            display: block;
+        }
+        #preview {
+            display: none;  /* Hidden initially */
+            width: 100vw;   /* Full viewport width */
+            max-width: 100%; 
+            height: auto;   /* Keep aspect ratio */
+            margin-top: 10px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Take a Photo</h1>
+
+    <!-- Camera Input -->
+    <input type="file" accept="image/*" id="cameraInput" capture="environment">
+
+    <!-- Display Captured Image -->
+    <h2>Preview:</h2>
+    <img id="preview" alt="Captured Image">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const cameraInput = document.getElementById("cameraInput");
+            const preview = document.getElementById("preview");
+
+            cameraInput.addEventListener("change", function (event) {
+                const file = event.target.files[0];
+
+                if (!file) {
+                    alert("No file selected.");
+                    return;
+                }
+
+                if (!file.type.startsWith("image/")) {
+                    alert("Please select a valid image file.");
+                    return;
+                }
+
+                const reader = new FileReader();
+                console.time("Image Load Time");
+
+                reader.onload = function (e) {
+                    console.timeEnd("Image Load Time");
+                    preview.src = e.target.result;
+
+                    // Ensure image is displayed properly
+                    setTimeout(() => {
+                        preview.style.display = "block"; 
+                    }, 50); 
+                };
+
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captured Photo</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <img id="displayImage" alt="Captured Image">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const savedImage = localStorage.getItem("capturedImage");
+
+            if (savedImage) {
+                document.getElementById("displayImage").src = savedImage;
+            } else {
+                document.body.innerHTML = "<h1 style='color: white;'>No image found!</h1>";
+            }
+        });
+    </script>
+</body>
+</html>
